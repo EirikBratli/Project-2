@@ -11,6 +11,32 @@
 using namespace std;
 using namespace arma;
 
+vec get_eigenvalues(mat A, int n){
+  vec eigen(n);
+  for (int i=0; i<n; i++){
+    eigen(i) = A(i,i);
+  }
+  eigen(n-1) = A(n-1,n-1);
+  sort(eigen.begin(), eigen.begin()+n);
+  return eigen;
+}
+
+mat get_eigenvectors(mat A, mat V, int n){
+  vec eigenvals=get_eigenvalues(A,n);
+  mat vecs(n,n);
+  for (int i=0; i<n; i++){
+    for (int j=0; j<n; j++){
+      if (A(j,j) == eigenvals(i)){
+        for (int k=0; k<n; k++){
+          vecs(i,k) = V(k,j);
+        }
+      }
+    }
+  }
+  return vecs;
+}
+
+
 double offdiag(mat A, int &k, int &l, int n){
   double max = 0.0;
   for (int i=0; i<n; i++){
@@ -72,6 +98,13 @@ void Rotate( mat& A, mat& R, int k, int l, int n){
 
     R(i,k) = r_ik*c - r_il*s;
     R(i,l) = r_il*c + r_ik*s;
+    if (i==n-2){
+      r_ik = R(i+1,k);
+      r_il = R(i+1,l);
+
+      R(i+1,k) = r_ik*c - r_il*s;
+      R(i+1,l) = r_il*c + r_ik*s;
+    }
   }
 
   //return A; // if not void function
