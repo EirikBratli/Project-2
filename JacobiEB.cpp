@@ -29,7 +29,7 @@ int main (int argc, char* argv[]) {
   string outdata = filename;
   //string argument = to_string(n);
   //outdata.append(argument)
-  outdata.append(".dat");
+  outdata.append(".txt");
 
   int i; int j; int k, l;
   double h, Rmax, d, a;
@@ -95,15 +95,18 @@ int main (int argc, char* argv[]) {
   V.print("Eigen vectors:");
   (V.t()*V).print("Orthogonality?");    // Test orthogonality
 
+
   // Write to file, including: eigenvectors
 
   ofile.open(outdata);
   ofile << setiosflags(ios::showpoint | ios::uppercase);
-
+  int ex0 = 0; int ex1 = 1; int ex2 = 2;
   for(int i=0; i<n; i++){
-    for (int j=0; j<n; j++){
-        ofile << setw(15) << setprecision(8) << V(i,j) << "  ";
-    }
+    //for (int j=0; j<2; j++){
+    ofile << setw(15) << setprecision(8) << V(i,ex0) << "  ";
+    ofile << setw(15) << setprecision(8) << V(i,ex1) << "  ";
+    ofile << setw(15) << setprecision(8) << V(i,ex2) << "  ";
+    //}
     ofile << "\n";
   }
   ofile.close();

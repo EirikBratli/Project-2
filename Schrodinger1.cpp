@@ -10,6 +10,7 @@
 
 using namespace std;
 using namespace arma;
+ofstream ofile;     // create file for output
 
 /*
 To do:
@@ -17,19 +18,33 @@ Try to get more precise eigenvalues by more integration points and/or adjust rho
 */
 
 int main (int argc, char* argv[]) {
-  //int n = 4;
-  int n = atoi(argv[1]);
+
+  int n;
+  string filename;
+  if (argc <=1){
+    cout << "Not enough arguments, need output filename and integration points N" << endl;
+    exit(1);
+  }
+  else{
+    filename = argv[1];
+    n = atoi(argv[2]);
+  }
+  string outdata = filename;
+  string argument = to_string(n);
+  outdata.append(argument);
+  outdata.append(".txt");
+
   double mass_e = 9.10938e-31;     // kg
   double hbar = 1.05457e-34;       // J s
-  double omega = 1.0;             // s^-1     // 0.00038
-  double alpha = pow(hbar*hbar/(mass_e*mass_e*omega*omega),0.25);
-  cout << "Infinity = " << alpha << " omega="<<omega << endl;
-  cout << n <<endl;
+  //double omega = 1.0;             // s^-1     // 0.00038
+  //double alpha = pow(hbar*hbar/(mass_e*mass_e*omega*omega),0.25);
+
+
   int i; int j; int k, l;
   double h, rhomax, rho0, d, a;
   double infinity = 1.0e20;
 
-  rhomax = 5.0; rho0 = 0.0;
+  rhomax = 6.0; rho0 = 0.0;
   h = (rhomax)/((double) n);
   d = 2.0/(h*h);    // Diagonal elements
   a = -1.0/(h*h);   // Off Diagonal elements
@@ -50,7 +65,7 @@ int main (int argc, char* argv[]) {
 
   }
   //lmbd(n-1) = 4.0*(n-1) + 3.0;
-  cout << "lol" << (n)*h*(n)*h << endl;
+
   A(n-1,n-1) = d + (n)*h*(n)*h;
   //A.print("A:");
   R(n-1,n-1) = 1.0;
@@ -61,6 +76,9 @@ int main (int argc, char* argv[]) {
   int iteration = 0;
   double maxoff = offdiag(A, k, l, n);
   cout << "max off diagonal="<< maxoff << endl;
+
+  clock_t start, finish;
+  start =clock();  // start timing
   while (fabs(maxoff) > epsilon && (double) iteration < max_number_iterations){
     max:maxoff = offdiag(A, k, l, n);
     //mat Rot = Rotate(A, R, k, l, n);    // No void function for Rotate
@@ -73,7 +91,10 @@ int main (int argc, char* argv[]) {
 
   }
 
+  finish =clock();   // end timing
+  double time_used = (double)(finish - start)/(CLOCKS_PER_SEC );
   cout << "Number of iteration: " << iteration << endl;
+  cout << setprecision(10) << "Time used: " << time_used << " s at n=" << n << endl;
   //A.print("A:");
   //R.print("R:");
 
@@ -81,7 +102,7 @@ int main (int argc, char* argv[]) {
   vec eigvals;
   eigvals = get_eigenvalues(A, n);
   //eigvals.print("Eigenvalues");
-  /*
+
   double lmbd;
   for (int i=0; i<5; i++){
     if (i < 10){
@@ -89,10 +110,31 @@ int main (int argc, char* argv[]) {
       cout << "i=" << i <<" Computed eigenvalue= " <<eigvals(i) << " exact= " << lmbd << endl;
     }
   }
-  mat V;
+
+  mat V; mat O;
   V = get_eigenvectors(A, R, n);
+  O = (V.t()*V);
+  //O.print("orthogonal?");
+
+
+  //V.print("Eigenvectors");
+
+  // Write to file:
+  /*
+  ofile.open(outdata);
+  ofile << setiosflags(ios::showpoint | ios::uppercase);
+  int ex0 = 0; int ex1 = 1; int ex2 = 2;
+  for(int i=0; i<n; i++){
+    ofile << setw(15) << setprecision(8) << i*h << "  ";
+    ofile << setw(15) << setprecision(8) << V(i,ex0) << "  "; // ground state
+    //ofile << setw(15) << setprecision(8) << V(i,ex1) << "  ";
+    //ofile << setw(15) << setprecision(8) << V(i,ex2) << "  ";
+    ofile << "\n";
+  }
+  ofile.close();
   */
-  TestEigenvalues(eigvals, n);
+
+  //TestEigenvalues(eigvals, n);
 
 
   //V.print("Eigen vectors:");
