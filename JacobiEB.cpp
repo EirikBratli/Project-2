@@ -57,7 +57,7 @@ int main (int argc, char* argv[]) {
   }
   A(n-1,n-1) = d;
   R(n-1,n-1) = 1.0;
-  R.print("R:");
+  //R.print("R:");
   mat Arot = A;
   double max_number_iterations = (double)n*(double)n*(double)n;
   int iteration = 0;
@@ -82,8 +82,8 @@ int main (int argc, char* argv[]) {
   cout << "Number of iteration: " << iteration << endl;
   cout << setprecision(10) << "Time used: " << time_used << " s at n=" << n << endl;
 
-  A.print("A:");
-  R.print("R:");
+  //A.print("A:");
+  //R.print("R:");
 
   // Test rotation:
   vec eigvals;
@@ -92,8 +92,8 @@ int main (int argc, char* argv[]) {
 
   mat V;
   V = get_eigenvectors(A, R, n);
-  V.print("Eigen vectors:");
-  (V.t()*V).print("Orthogonality?");    // Test orthogonality
+  //V.print("Eigen vectors:");
+  //(V.t()*V).print("Orthogonality?");    // Test orthogonality
 
 
   // Write to file, including: eigenvectors

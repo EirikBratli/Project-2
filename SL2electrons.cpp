@@ -1,3 +1,8 @@
+/*
+Solve Schrodinger equation for two electron i harmonic oscillator potential and
+with repulsion
+*/
+
 #include <iostream>
 #include <armadillo>
 #include <cmath>
@@ -29,7 +34,7 @@ int main (int argc, char* argv[]) {
   }
 
   vec wr = zeros(4); //= [0.01, 0.5, 1.0, 5.0];
-  wr(0) = 0.01;// wr(1) = 0.5; wr(2) = 1.0; wr(3) = 5.0;
+  wr(0) = 0.01; wr(1) = 0.5; wr(2) = 1.0; wr(3) = 5.0;
   double mass_e = 9.10938e-31;     // kg
   double hbar = 1.05457e-34;       // J s
 
@@ -102,21 +107,21 @@ int main (int argc, char* argv[]) {
 
     mat V;
     V = get_eigenvectors(A, R, n);
-
-    //TestEigenvalues(eigvals, n);
+    // test orthonormality:
+    // test orthogonality:
+    //(V.t()*V).print("orthogonality?")
+    //(sum(V)).print("orthonormality?");
 
     ofile.open(outdata);
     ofile << setiosflags(ios::showpoint | ios::uppercase);
     int ex0 = 0; int ex1 = 1; int ex2 = 2;
     for(int i=0; i<n; i++){
       ofile << setw(15) << setprecision(8) << i*h << "  ";
-      ofile << setw(15) << setprecision(8) << V(i,ex0) << "  ";
+      ofile << setw(15) << setprecision(8) << V(ex0, i) << "  ";
       ofile << "\n";
     }
     ofile.close();
 
-    //V.print("Eigen vectors:");
-    //(V.t()*V).print("Orthogonality?");
 
   }
   return 0;

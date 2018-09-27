@@ -11,6 +11,8 @@
 using namespace std;
 using namespace arma;
 
+
+
 vec get_eigenvalues(mat A, int n){
   vec eigen(n);
   for (int i=0; i<n; i++){
