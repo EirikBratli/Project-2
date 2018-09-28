@@ -107,10 +107,6 @@ int main (int argc, char* argv[]) {
 
     mat V;
     V = get_eigenvectors(A, R, n);
-    // test orthonormality:
-    // test orthogonality:
-    //(V.t()*V).print("orthogonality?")
-    //(sum(V)).print("orthonormality?");
 
     ofile.open(outdata);
     ofile << setiosflags(ios::showpoint | ios::uppercase);

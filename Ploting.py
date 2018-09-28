@@ -23,6 +23,7 @@ def data2electrons(filename):
     """
     Import data files and put the eigenvectors into arrays.
     """
+    print filename
     rho = np.loadtxt(filename[-1])[:,0]
     N = len(rho); m = len(filename)
     print N, m
@@ -86,25 +87,26 @@ def plotEigenvectors(filename, name):
                 c=color[i], label=r'$\omega_r$=%g'%(omega_r[i]))
         plt.xlabel(r'$\rho$', size=14)
         plt.ylabel(r'$|\psi(\rho)|^2$', size=14)
-        plt.legend(loc=2, fontsize=12)
+        plt.legend(loc=9, fontsize=12)
         plt.grid('on')
         plt.tight_layout()
         plt.savefig('Plot_pro2/2el_%s_normalised.png'%(name))
-
+        plt.savefig('Plot_pro2/2el_%s_normalised_rho10.png'%(name))
 
         plt.figure('%s'%name)
         plt.plot(rho, np.absolute(Eigvecs[:,i])**2,c=color[i], label=r'$\omega_r$=%g'%(omega_r[i]))
         plt.xlabel(r'$\rho$', size=14)
         plt.ylabel(r'$|\psi(\rho)|^2$', size=14)
-        plt.legend(loc=1, fontsize=12)
+        plt.legend(loc=9, fontsize=12)
         plt.grid('on')
         plt.tight_layout()
-        plt.savefig('Plot_pro2/2el_%s.png'%name)
+        #plt.savefig('Plot_pro2/2el_%s.png'%name)
+        plt.savefig('Plot_pro2/2el_%s_rho10.png'%name)
 
 
 #d = data()
-#plot1 = plotEigenvectors(repulsion, 'repulsion')
-p2 = plotEigenvectors(norep, 'no_repulsion')
-p3 = plotStates(states, 'states')
+plot1 = plotEigenvectors(repulsion, 'repulsion')
+#p2 = plotEigenvectors(norep, 'no_repulsion')
+#p3 = plotStates(states, 'states')
 
 plt.show()

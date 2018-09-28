@@ -124,10 +124,8 @@ int main (int argc, char* argv[]) {
 
     mat V; mat O;
     V = get_eigenvectors(A, R, n);
-    O = (V.t()*V);
+    //O = (V.t()*V);
     //O.print("orthogonal?");
-
-
     //V.print("Eigenvectors");
 
     // Write to file:
@@ -146,8 +144,6 @@ int main (int argc, char* argv[]) {
 
 
     //TestEigenvalues(eigvals, n);
-
-
     //V.print("Eigen vectors:");
     //(V.t()*V).print("Orthogonality?");
   }
